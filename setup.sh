@@ -1,11 +1,13 @@
 #!/bin/bash
 set -e
+set -x  # Habilitar trazado para depuración
 
 # 🟡 1. Preguntar por login manager
 read -p "¿Tienes un gestor de inicio de sesión? (sí/no): " tiene_login
 
+# Comprobar si el usuario respondió sí o no
 if [[ "$tiene_login" =~ ^[Nn][Oo]$ ]]; then
-    echo "🔐 Instalando lydm..."
+    echo "🔐 Instalando LYDM..."
     sudo pacman -S --noconfirm lydm
     sudo systemctl enable lydm.service
 fi
@@ -36,15 +38,23 @@ yay -S --noconfirm discord
 # 🟡 5. Instalar oh-my-bash para usuario
 if [ ! -d "$HOME/.oh-my-bash" ]; then
     echo "🐚 Instalando oh-my-bash para usuario..."
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)" --unattended
-    sed -i 's/OSH_THEME=.*/OSH_THEME="agnoster"/' ~/.bashrc
+    if curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh | sh -s -- --unattended; then
+        echo "✅ oh-my-bash instalado para usuario."
+        sed -i 's/OSH_THEME=.*/OSH_THEME="agnoster"/' ~/.bashrc
+    else
+        echo "❌ Falló la instalación de oh-my-bash para usuario."
+    fi
 fi
 
 # 🟡 6. Instalar oh-my-bash para root
-echo "🐚 Instalando oh-my-bash para root..."
 if sudo test ! -d /root/.oh-my-bash; then
-    sudo bash -c 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)" --unattended'
-    sudo sed -i 's/OSH_THEME=.*/OSH_THEME="agnoster"/' /root/.bashrc
+    echo "🐚 Instalando oh-my-bash para root..."
+    if sudo bash -c 'curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh | sh -s -- --unattended'; then
+        echo "✅ oh-my-bash instalado para root."
+        sudo sed -i 's/OSH_THEME=.*/OSH_THEME="agnoster"/' /root/.bashrc
+    else
+        echo "❌ Falló la instalación de oh-my-bash para root."
+    fi
 fi
 
 # 🟡 7. Instalar FiraCode Nerd Font
@@ -58,8 +68,14 @@ fc-cache -fv
 # 🟡 8. Configurar i3 (config + wallpaper)
 echo "🧩 Configurando i3 y wallpaper..."
 mkdir -p ~/.config/i3
-cp -f ./config ~/.config/i3/config
-cp -f ./wallpaper.jpg ~/.config/i3/wallpaper.jpg
+
+# Asegúrate de que los archivos existan antes de copiarlos
+if [[ -f "./config" && -f "./wallpaper.jpg" ]]; then
+    cp -f ./config ~/.config/i3/config
+    cp -f ./wallpaper.jpg ~/.config/i3/wallpaper.jpg
+else
+    echo "⚠️  No se encontraron los archivos 'config' o 'wallpaper.jpg'. Asegúrate de tenerlos en el directorio correcto."
+fi
 
 # 🟡 9. Crear carpetas de usuario estándar
 echo "📁 Creando carpetas de usuario estándar..."
