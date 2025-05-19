@@ -9,11 +9,11 @@ if [[ "$confirmacion" =~ ^[Nn][Oo]$ ]]; then
     exit 1
 fi
 
-# 🗑 Desinstalar paquetes instalados
+# 🗑 Desinstalar paquetes instalados (reemplazamos scrot y udiskie por alternativas)
 echo "📦 Eliminando paquetes instalados..."
 sudo pacman -Rns --noconfirm i3-wm i3status picom feh rofi alacritty cbatticon \
-    network-manager-applet blueman pavucontrol brightnessctl light i3lock scrot \
-    thunar gvfs gvfs-mtp gvfs-gphoto2 udiskie code discord
+    network-manager-applet blueman pavucontrol brightnessctl flameshot gnome-screenshot \
+    thunar gvfs gvfs-mtp gvfs-gphoto2 udisks2 code discord
 
 # 🗑 Eliminar yay (si existe)
 if command -v yay &> /dev/null; then
