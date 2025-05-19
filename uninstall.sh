@@ -11,14 +11,14 @@ fi
 
 # 🗑 Desinstalar paquetes instalados (reemplazamos scrot y udiskie por alternativas)
 echo "📦 Eliminando paquetes instalados..."
-sudo pacman -Rns --noconfirm i3-wm i3status picom feh rofi alacritty cbatticon \
-    network-manager-applet blueman pavucontrol brightnessctl flameshot gnome-screenshot \
-    thunar gvfs gvfs-mtp gvfs-gphoto2 udisks2 code discord
+sudo pacman -R --noconfirm i3-wm i3status picom feh rofi alacritty cbatticon \
+    network-manager-applet blueman pavucontrol brightnessctl maim thunar \
+    gvfs gvfs-mtp gvfs-gphoto2 udisks2 code discord
 
 # 🗑 Eliminar yay (si existe)
 if command -v yay &> /dev/null; then
     echo "🧽 Eliminando yay..."
-    sudo pacman -Rns --noconfirm yay
+    sudo pacman -R --noconfirm yay
     rm -rf /tmp/yay
 fi
 
