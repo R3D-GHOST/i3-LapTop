@@ -18,7 +18,7 @@ sudo pacman -Syu --noconfirm
 sudo pacman -S --noconfirm \
     git curl wget unzip base-devel i3-wm i3status \
     picom feh rofi alacritty cbatticon network-manager-applet \
-    blueman pavucontrol brightnessctl light i3lock scrot thunar \
+    blueman pavucontrol brightnessctl i3lock scrot thunar \
     gvfs gvfs-mtp gvfs-gphoto2 udiskie code xdg-user-dirs \
     python-psutil
 
@@ -71,8 +71,8 @@ mkdir -p ~/.config/i3
 
 # Asegúrate de que los archivos existan antes de copiarlos
 if [[ -f "./config" && -f "./wallpaper.jpg" ]]; then
-    cp -f ./config ~/.config/i3/config
-    cp -f ./wallpaper.jpg ~/.config/i3/wallpaper.jpg
+    cp -r ./config ~/.config/i3/config
+    cp -r ./wallpaper.jpg ~/.config/i3/wallpaper.jpg
 else
     echo "⚠️  No se encontraron los archivos 'config' o 'wallpaper.jpg'. Asegúrate de tenerlos en el directorio correcto."
 fi
